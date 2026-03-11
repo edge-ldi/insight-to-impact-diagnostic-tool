@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Insight to Impact™ — Diagnostic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #ff2323;
+    --red-dark: #cc0000;
+    --red-deep: #8a0000;
+    --red-mid: #e01e1e;
+    --red-pale: #fff0f0;
+    --red-light: #ffe0e0;
+    --black: #000000;
+    --off-black: #111111;
+    --dark-grey: #1c1c1c;
+    --mid-grey: #2e2e2e;
+    --grey: #555555;
+    --light-grey: #595959;   /* was #999999 — darkened for WCAG AA on white */
+    --border: #e0e0e0;
+    --off-white: #f8f8f8;
+    --white: #ffffff;
+
+    /* Module accent tones — all red/grey spectrum */
+    --m1: #ff2323;       /* Insight   — full red */
+    --m2: #cc1a1a;       /* Intent    — deep red */
+    --m3: #ff5555;       /* Craft     — lighter red */
+    --m4: #333333;       /* Enable    — dark grey */
+    --m5: #000000;       /* Impact    — black */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--black);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    padding: 1.6rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--black);
+    position: relative;
+    z-index: 1;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red) 0%, #ff6666 50%, var(--red) 100%);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--white);
+  }
+  .logo span {
+    color: var(--red);
+  }
+  .tagline {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.62);  /* ~#9e9e9e on black = 4.6:1 ✅ */
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .progress-bar {
+    width: 180px;
+    height: 2px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), #ff6666);
+    border-radius: 99px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.62);  /* matches tagline — 4.6:1 on black ✅ */
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 5rem;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen {
+    display: none;
+    animation: fadeUp 0.45s ease both;
+  }
+  .screen.active {
+    display: block;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── INTRO SCREEN ─── */
+  .intro-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c00000;  /* darkened from #ff2323 — 4.6:1 on white/off-white ✅ */
+    margin-bottom: 1.2rem;
+  }
+  .intro-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.12;
+    margin-bottom: 1.5rem;
+    color: var(--black);
+  }
+  .intro-title em {
+    font-style: italic;
+    color: var(--red);
+  }
+  .intro-body {
+    font-size: 1.02rem;
+    line-height: 1.78;
+    color: var(--grey);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+  }
+  .module-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+  .chip {
+    padding: 0.35rem 0.95rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--grey);
+    transition: all 0.15s ease;
+  }
+  .chip.insight { border-color: var(--m1); color: var(--m1); background: var(--red-pale); }
+  .chip.intent  { border-color: var(--m2); color: var(--m2); background: #fff2f2; }
+  .chip.craft   { border-color: var(--m3); color: #cc3333; background: #fff5f5; }
+  .chip.enable  { border-color: var(--m4); color: var(--m4); background: #f5f5f5; }
+  .chip.impact  { border-color: var(--m5); color: var(--m5); background: #f0f0f0; }
+
+  /* ─── SECTION HEADER ─── */
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.85rem 0.3rem 0.55rem;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .section-badge .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .badge-insight { background: var(--red-pale); color: var(--red-dark); }
+  .badge-insight .dot { background: var(--m1); }
+  .badge-intent  { background: #fff2f2; color: var(--m2); }
+  .badge-intent .dot { background: var(--m2); }
+  .badge-craft   { background: #fff5f5; color: #cc3333; }
+  .badge-craft .dot { background: var(--m3); }
+  .badge-enable  { background: #f5f5f5; color: var(--m4); }
+  .badge-enable .dot { background: var(--m4); }
+  .badge-impact  { background: #f0f0f0; color: var(--m5); }
+  .badge-impact .dot { background: var(--m5); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--black);
+  }
+  .section-desc {
+    color: var(--light-grey);
+    font-size: 0.92rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.65;
+  }
+
+  /* ─── QUESTION CARD ─── */
+  .question-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.8rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease;
+  }
+  .question-card:focus-within {
+    box-shadow: 0 2px 18px rgba(255,35,35,0.08);
+    border-color: #f0c0c0;
+  }
+  .q-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--light-grey);
+    margin-bottom: 0.85rem;
+  }
+  .q-text {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.58;
+    margin-bottom: 1.5rem;
+    color: var(--black);
+  }
+
+  /* ─── OPTION BUTTONS ─── */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--off-white);
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--off-black);
+    transition: all 0.16s ease;
+    width: 100%;
+  }
+  .option-btn:hover {
+    border-color: var(--red);
+    background: var(--red-pale);
+  }
+  .option-btn.selected {
+    border-color: var(--red);
+    background: linear-gradient(135deg, var(--red-pale), var(--red-light));
+    color: var(--red-deep);
+  }
+  .option-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.16s ease;
+    font-size: 0.6rem;
+  }
+  .option-btn.selected .option-indicator {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
+  .option-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+  .option-btn.selected .option-label { opacity: 0.7; }
+  .option-text { flex: 1; }
+
+  /* ─── NAV BUTTONS ─── */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.9rem;
+    border-radius: 99px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary {
+    background: var(--black);
+    color: var(--white);
+  }
+  .btn-primary:hover {
+    background: var(--dark-grey);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-mid) 100%);
+    color: var(--white);
+  }
+  .btn-gold:hover {
+    background: linear-gradient(135deg, var(--red-mid) 0%, var(--red-dark) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(255,35,35,0.35);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--light-grey);
+    border: 1.5px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: var(--black);
+    color: var(--black);
+  }
+
+  /* ─── RESULTS ─── */
+  .results-header {
+    text-align: center;
+    padding: 2.5rem 0 3rem;
+    position: relative;
+  }
+  .results-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--red), #ff6666);
+    border-radius: 99px;
+  }
+  .results-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c00000;  /* 4.6:1 on white ✅ */
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+  }
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    margin-bottom: 0.8rem;
+    color: var(--black);
+  }
+  .results-sub {
+    color: var(--light-grey);
+    font-size: 0.95rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.68;
+  }
+
+  /* ─── SCORE CARDS ─── */
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .score-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  .score-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .score-card.insight::before { background: linear-gradient(90deg, var(--m1), #ff7777); }
+  .score-card.intent::before  { background: linear-gradient(90deg, var(--m2), #ff4444); }
+  .score-card.craft::before   { background: linear-gradient(90deg, var(--m3), #ffaaaa); }
+  .score-card.enable::before  { background: linear-gradient(90deg, var(--m4), #888888); }
+  .score-card.impact::before  { background: linear-gradient(90deg, var(--m5), #555555); }
+
+  .score-module-name {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .score-module-name.insight { color: #c00000; }  /* 4.6:1 on white ✅ */
+  .score-module-name.intent  { color: #aa1515; }  /* 5.2:1 on white ✅ */
+  .score-module-name.craft   { color: #c03030; }  /* 4.5:1 on white ✅ */
+  .score-module-name.enable  { color: var(--m4); }
+  .score-module-name.impact  { color: var(--m5); }
+
+  .score-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    color: var(--black);
+  }
+  .score-label {
+    font-size: 0.75rem;
+    color: var(--light-grey);
+    margin-bottom: 1rem;
+  }
+  .score-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1.1s ease 0.3s;
+    width: 0;
+  }
+  .fill-insight { background: linear-gradient(90deg, var(--m1), #ff7777); }
+  .fill-intent  { background: linear-gradient(90deg, var(--m2), #ff4444); }
+  .fill-craft   { background: linear-gradient(90deg, var(--m3), #ffaaaa); }
+  .fill-enable  { background: linear-gradient(90deg, var(--m4), #888888); }
+  .fill-impact  { background: linear-gradient(90deg, var(--m5), #555555); }
+
+  .maturity-tag {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0.22rem 0.65rem;
+    border-radius: 99px;
+    margin-top: 0.7rem;
+    letter-spacing: 0.04em;
+  }
+  .tag-strong   { background: #f0f0f0; color: #111; border: 1px solid #ccc; }
+  .tag-moderate { background: #fff5f5; color: #8a0000; border: 1px solid #ffcccc; }  /* 9.4:1 ✅ */
+  .tag-gap      { background: #fff0f0; color: #8a0000; border: 1px solid #ffaaaa; font-weight: 700; }  /* 9.4:1 ✅ */
+
+  /* ─── GAP ANALYSIS ─── */
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    margin-bottom: 0.4rem;
+    color: var(--black);
+  }
+  .section-subheading {
+    color: var(--light-grey);
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gap-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 0.9rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .gap-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .gap-content { flex: 1; }
+  .gap-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: var(--black);
+  }
+  .gap-desc {
+    font-size: 0.84rem;
+    color: var(--light-grey);
+    line-height: 1.62;
+  }
+
+  /* ─── RECOMMENDATIONS ─── */
+  .rec-card {
+    border-radius: 14px;
+    padding: 1.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+  }
+  .rec-card.priority {
+    border-color: var(--red);
+    background: linear-gradient(135deg, #fff8f8, var(--red-pale));
+  }
+  .rec-card.secondary {
+    background: var(--white);
+    border-color: var(--border);
+  }
+  .rec-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+  .rec-module {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+  }
+  .rec-priority-badge {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a0000;  /* 9.4:1 on pale red ✅ */
+  }
+  .rec-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+    color: var(--black);
+  }
+  .rec-desc {
+    font-size: 0.87rem;
+    color: var(--light-grey);
+    line-height: 1.68;
+    margin-bottom: 1rem;
+  }
+  .rec-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .action-pill {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.72rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--off-white);
+    color: var(--grey);
+  }
+
+  /* ─── NEXT STEPS ─── */
+  .next-steps {
+    background: linear-gradient(135deg, var(--black) 0%, var(--dark-grey) 60%, #1a0000 100%);
+    color: var(--white);
+    border-radius: 18px;
+    padding: 2.4rem;
+    margin-top: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .next-steps::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), #ff7777, var(--red));
+  }
+  .next-steps::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,35,35,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .next-steps-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    margin-bottom: 0.4rem;
+  }
+  .next-steps-sub {
+    color: rgba(255,255,255,0.65);  /* ~#a6a6a6 on #1c1c1c = 5.1:1 ✅ */
+    font-size: 0.87rem;
+    margin-bottom: 1.8rem;
+  }
+  .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--red);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 0 12px rgba(255,35,35,0.4);
+  }
+  .step-body { flex: 1; }
+  .step-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+  .step-desc {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.65);  /* 5.1:1 on near-black ✅ */
+    line-height: 1.62;
+  }
+  .results-cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 3rem 0;
+  }
+
+  /* ─── VALIDATION MSG ─── */
+  .val-msg {
+    font-size: 0.8rem;
+    color: var(--red);
+    margin-top: 0.8rem;
+    display: none;
+  }
+  .val-msg.show { display: block; }
+
+  /* ─── SKIP LINK ─── */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    background: var(--black);
+    color: var(--white);
+    padding: 0.6rem 1.2rem;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 9999;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--red);
+    outline-offset: 2px;
+  }
+
+  /* ─── REDUCED MOTION ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .score-bar-fill {
+      transition: none !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .score-grid { grid-template-columns: 1fr 1fr; }
+    .main { padding: 2rem 1.2rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- HEADER -->
+<header class="header">
+  <div>
+    <div class="logo">From Insight to Impact<span>™</span></div>
+    <div class="tagline">Learning Effectiveness Diagnostic</div>
+  </div>
+  <div class="progress-wrap" id="progressWrap" style="display:none">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+</header>
+
+<main class="main" id="main-content" aria-label="Diagnostic assessment">
+
+  <!-- ══ SCREEN 0: INTRO ══ -->
+  <div class="screen active" id="screen-intro">
+    <p class="intro-eyebrow">Diagnostic Assessment</p>
+    <h1 class="intro-title">Where does your<br>learning initiative<br><em>really</em> stand?</h1>
+    <p class="intro-body">This diagnostic helps identify how effectively your organisation is using learning to solve real problems and drive results — and which modules of the From Insight to Impact™ framework will deliver the most value for your organisation right now.</p>
+    <div class="module-chips">
+      <span class="chip insight">① Insight</span>
+      <span class="chip intent">② Intent</span>
+      <span class="chip craft">③ Craft</span>
+      <span class="chip enable">④ Enable</span>
+      <span class="chip impact">⑤ Impact</span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--light-grey);margin-bottom:2rem;">Takes approximately 8–12 minutes &nbsp;·&nbsp; 30 questions across 5 modules</p>
+    <button type="button" class="btn btn-gold" onclick="startDiagnostic()">Begin Diagnostic &rarr;</button>
+  </div>
+
+  <!-- ══ SCREENS 1–5: QUESTION SECTIONS ══ -->
+  <div id="questionScreens"></div>
+
+  <!-- ══ SCREEN: RESULTS ══ -->
+  <div class="screen" id="screen-results" aria-live="polite" aria-atomic="true" role="region" aria-label="Your diagnostic results"></div>
+
+</main>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const modules = [
+  {
+    id: 'insight',
+    name: 'Insight',
+    tagline: 'Understanding the real problem',
+    desc: 'These questions explore how well your organisation understands the business context, learner needs, root causes of performance gaps, and whether existing data is informing that understanding.',
+    badge: 'badge-insight',
+    questions: [
+      {
+        text: 'How clearly has your organisation defined the business problem or performance gap this initiative should address?',
+        options: [
+          { label: 'Not defined', text: 'We\'re jumping straight into content creation without a clear problem statement.', score: 1 },
+          { label: 'Partially defined', text: 'There\'s a general sense of the issue but no formal analysis or shared understanding.', score: 2 },
+          { label: 'Mostly defined', text: 'We\'ve had discussions and have a working hypothesis but haven\'t validated it.', score: 3 },
+          { label: 'Clearly defined', text: 'We have a documented, stakeholder-agreed problem statement tied to business outcomes.', score: 4 },
+        ]
+      },
+      {
+        text: 'How well do you understand the root causes driving the performance gap (not just the symptoms)?',
+        options: [
+          { label: 'Not at all', text: 'We\'re responding to what people asked for without questioning why the gap exists.', score: 1 },
+          { label: 'Slightly', text: 'We\'ve had some conversations but haven\'t dug into root causes systematically.', score: 2 },
+          { label: 'Moderately', text: 'We have a good sense of root causes but there are still unknowns.', score: 3 },
+          { label: 'Thoroughly', text: 'We\'ve conducted structured discovery and are confident about root causes.', score: 4 },
+        ]
+      },
+      {
+        text: 'How much do you know about the learner audience — their context, constraints, and motivations?',
+        options: [
+          { label: 'Very little', text: 'We\'re designing for a broad assumed audience without specific insight.', score: 1 },
+          { label: 'Some', text: 'We know basic demographics and role information.', score: 2 },
+          { label: 'Good understanding', text: 'We know their challenges, workflows, and barriers to performance.', score: 3 },
+          { label: 'Deep understanding', text: 'We have detailed learner profiles based on direct research and consultation.', score: 4 },
+        ]
+      },
+      {
+        text: 'Have the key business success measures for this initiative been identified and agreed upon?',
+        options: [
+          { label: 'Not yet', text: 'No clear success criteria have been established.', score: 1 },
+          { label: 'Informally', text: 'There\'s a vague sense of what success looks like but nothing documented.', score: 2 },
+          { label: 'Partially', text: 'Some measures exist but they\'re not fully agreed or tied to business outcomes.', score: 3 },
+          { label: 'Fully agreed', text: 'Clear, documented success measures are in place with stakeholder sign-off.', score: 4 },
+        ]
+      },
+      {
+        text: 'How well do you understand the technology and tools currently available in your learners\' environment?',
+        options: [
+          { label: 'Unknown', text: 'We have no clear picture of what technology or systems learners have access to.', score: 1 },
+          { label: 'Basic awareness', text: 'We know roughly what platforms exist but haven\'t factored them into our planning.', score: 2 },
+          { label: 'Good understanding', text: 'We know the main tools and have considered how they shape the learning approach.', score: 3 },
+          { label: 'Fully mapped', text: 'We have a detailed picture of the tech environment including access, constraints, and capabilities.', score: 4 },
+        ]
+      },
+      {
+        text: 'To what extent has existing data — such as performance metrics, previous learning outcomes, or workforce analytics — been used to inform your discovery and problem definition?',
+        options: [
+          { label: 'Not used', text: 'We haven\'t drawn on any existing data — discovery has been based on conversation and assumption.', score: 1 },
+          { label: 'Occasionally referenced', text: 'Some data has been mentioned but it hasn\'t meaningfully shaped the problem definition.', score: 2 },
+          { label: 'Partially used', text: 'We\'ve drawn on some relevant data but haven\'t done so systematically across all areas.', score: 3 },
+          { label: 'Actively used', text: 'Existing data has been deliberately gathered and used to ground and validate our understanding of the problem.', score: 4 },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'intent',
+    name: 'Intent',
+    tagline: 'Architecting with purpose',
+    desc: 'These questions assess how well your initiative has been strategically designed — translating insight into a clear learning architecture aligned to intended outcomes.',
+    badge: 'badge-intent',
+    questions: [
+      {
+        text: 'Do you have a documented learning strategy or blueprint that outlines the approach, outcomes, and rationale?',
+        options: [
+          { label: 'No', text: 'We\'re building directly without a strategy document.', score: 1 },
+          { label: 'In progress', text: 'We\'re working on it but it\'s incomplete or hasn\'t been shared.', score: 2 },
+          { label: 'Draft exists', text: 'There\'s a blueprint but it hasn\'t been formally reviewed or aligned to business goals.', score: 3 },
+          { label: 'Fully documented', text: 'A complete, stakeholder-approved blueprint is in place.', score: 4 },
+        ]
+      },
+      {
+        text: 'Have intended mindset shifts, desired behaviours, and specific learning outcomes been clearly defined?',
+        options: [
+          { label: 'Not at all', text: 'We\'re creating content based on topics rather than outcomes.', score: 1 },
+          { label: 'Loosely', text: 'Some objectives exist but they\'re vague or not measurable.', score: 2 },
+          { label: 'Mostly', text: 'Outcomes are defined but mindset shifts and behaviours could be clearer.', score: 3 },
+          { label: 'Clearly defined', text: 'Specific outcomes, mindset shifts and behaviours are documented and aligned.', score: 4 },
+        ]
+      },
+      {
+        text: 'Have potential barriers to learning adoption (e.g., manager support, time, culture) been identified and planned for?',
+        options: [
+          { label: 'Not considered', text: 'We haven\'t thought about what might prevent people from applying learning.', score: 1 },
+          { label: 'Briefly discussed', text: 'We\'ve noted a few barriers informally.', score: 2 },
+          { label: 'Identified', text: 'We\'ve mapped key barriers and have some mitigation strategies.', score: 3 },
+          { label: 'Fully planned', text: 'Barriers are documented with specific mitigation actions in the blueprint.', score: 4 },
+        ]
+      },
+      {
+        text: 'At a strategic level, has it been decided whether the solution will lead to a formal qualification, certification, or will it be non-accredited?',
+        options: [
+          { label: 'Not considered', text: 'This decision hasn\'t been discussed as part of the strategy.', score: 1 },
+          { label: 'Raised but unresolved', text: 'It\'s been mentioned but no decision has been made or documented.', score: 2 },
+          { label: 'Decided informally', text: 'There\'s a general direction but it hasn\'t been formally aligned to learner needs or business goals.', score: 3 },
+          { label: 'Clearly decided', text: 'A deliberate decision has been made, documented, and reflected in the blueprint.', score: 4 },
+        ]
+      },
+      {
+        text: 'Does your current approach include a deliberate mix of modalities and touchpoints (not just a single course or event)?',
+        options: [
+          { label: 'Single intervention', text: 'We\'re delivering one course or event and that\'s it.', score: 1 },
+          { label: 'Minimal variety', text: 'There\'s a primary modality with perhaps one supporting resource.', score: 2 },
+          { label: 'Some variation', text: 'We\'ve included a few different touchpoints but it\'s not systematic.', score: 3 },
+          { label: 'Intentional journey', text: 'The solution is a designed experience with multiple strategic touchpoints.', score: 4 },
+        ]
+      },
+      {
+        text: 'How deliberately has the delivery modality (face-to-face, blended, or fully online) been chosen to suit learner needs and context?',
+        options: [
+          { label: 'Default choice', text: 'We defaulted to what we always do or what was easiest to arrange.', score: 1 },
+          { label: 'Somewhat considered', text: 'We\'ve thought about it briefly but haven\'t validated it against learner needs.', score: 2 },
+          { label: 'Considered', text: 'The modality choice was discussed and makes sense for this audience.', score: 3 },
+          { label: 'Evidence-based', text: 'The modality was chosen based on learner context, access, and what will drive best performance outcomes.', score: 4 },
+        ]
+      },
+      {
+        text: 'Does your learning strategy intentionally combine formal learning, on-the-job experience, and social or peer learning?',
+        options: [
+          { label: 'Formal only', text: 'We rely almost entirely on structured, formal learning events or content.', score: 1 },
+          { label: 'Mainly formal', text: 'There\'s a dominant formal component with minimal on-the-job or social elements.', score: 2 },
+          { label: 'Some integration', text: 'We incorporate some on-the-job or social elements but not in a structured way.', score: 3 },
+          { label: 'Intentionally blended', text: 'The strategy deliberately integrates formal, experiential, and social learning in a connected design.', score: 4 },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'craft',
+    name: 'Craft',
+    tagline: 'Creating learning people can apply',
+    desc: 'These questions examine the quality of your design and development process — whether learning experiences are learner-centred, applied, and built on solid instructional practice.',
+    badge: 'badge-craft',
+    questions: [
+      {
+        text: 'How closely does your current content align to real-world tasks and scenarios learners face on the job?',
+        options: [
+          { label: 'Theoretical', text: 'Content is mostly conceptual with limited practical application.', score: 1 },
+          { label: 'Some examples', text: 'We include some examples but they aren\'t deeply contextualised.', score: 2 },
+          { label: 'Job-relevant', text: 'Most content is tied to real scenarios but there\'s room to improve.', score: 3 },
+          { label: 'Highly contextualised', text: 'Learning is built around real tasks, decisions, and challenges from the role.', score: 4 },
+        ]
+      },
+      {
+        text: 'Does your development process include prototyping, learner review, and iterative refinement?',
+        options: [
+          { label: 'Linear only', text: 'We build, review once with stakeholders, and finalise.', score: 1 },
+          { label: 'Some review', text: 'We do stakeholder reviews but rarely test with actual learners.', score: 2 },
+          { label: 'Iterative', text: 'We prototype and iterate but the process isn\'t fully systematic.', score: 3 },
+          { label: 'Fully iterative', text: 'We prototype early, test with learners, and refine based on feedback loops.', score: 4 },
+        ]
+      },
+      {
+        text: 'How consistently are adult learning principles (e.g. relevance, autonomy, prior experience, problem-centred) applied in your designs?',
+        options: [
+          { label: 'Rarely', text: 'We follow content outlines rather than adult learning principles.', score: 1 },
+          { label: 'Sometimes', text: 'We apply some principles but inconsistently across our work.', score: 2 },
+          { label: 'Usually', text: 'Most of our design decisions are informed by adult learning theory.', score: 3 },
+          { label: 'Consistently', text: 'Adult learning principles are embedded throughout our design process.', score: 4 },
+        ]
+      },
+      {
+        text: 'Is inclusion and accessibility actively designed into your learning experiences from the start?',
+        options: [
+          { label: 'Not considered', text: 'Inclusion and accessibility are not part of our current design process.', score: 1 },
+          { label: 'Ad hoc', text: 'We make accommodations when asked but it\'s not built into the process.', score: 2 },
+          { label: 'Considered', text: 'We aim for inclusive design but apply it unevenly.', score: 3 },
+          { label: 'By default', text: 'Inclusion and accessibility are embedded from the very first design decision.', score: 4 },
+        ]
+      },
+      {
+        text: 'Where the solution leads to a formal qualification or certification, how well are those requirements reflected in the design — including assessment, evidence, and structure?',
+        options: [
+          { label: 'Not reflected', text: 'Qualification or certification requirements haven\'t been factored into the design at all.', score: 1 },
+          { label: 'Loosely considered', text: 'We\'re aware of the requirements but they haven\'t been systematically built into the design.', score: 2 },
+          { label: 'Mostly reflected', text: 'Most requirements are addressed in the design but some gaps remain.', score: 3 },
+          { label: 'Fully integrated', text: 'Assessment, evidence requirements, and structure are all aligned to qualification or certification standards from the ground up.', score: 4 },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'enable',
+    name: 'Enable',
+    tagline: 'Supporting confident delivery & adoption',
+    desc: 'These questions explore whether your delivery ecosystem — facilitators, clients, learners, and systems — is set up to ensure the learning lands as intended.',
+    badge: 'badge-enable',
+    questions: [
+      {
+        text: 'How well-prepared are the facilitators or delivery team to deliver this learning experience?',
+        options: [
+          { label: 'Unprepared', text: 'Facilitators are given materials but receive no formal preparation or training.', score: 1 },
+          { label: 'Minimally prepared', text: 'There\'s a brief handover but no dedicated facilitator development.', score: 2 },
+          { label: 'Reasonably prepared', text: 'Facilitators receive guidance and have some opportunity to rehearse.', score: 3 },
+          { label: 'Fully prepared', text: 'Facilitators go through structured preparation including guides, rehearsal, and coaching.', score: 4 },
+        ]
+      },
+      {
+        text: 'Is there a structured process for piloting and refining the learning before full rollout?',
+        options: [
+          { label: 'No pilot', text: 'We go straight to full rollout without a pilot phase.', score: 1 },
+          { label: 'Informal', text: 'We sometimes test with a small group but without formal feedback collection.', score: 2 },
+          { label: 'Structured pilot', text: 'We run a pilot and gather feedback but refinement is inconsistent.', score: 3 },
+          { label: 'Full pilot process', text: 'We have a systematic pilot, feedback, and refinement cycle before full rollout.', score: 4 },
+        ]
+      },
+      {
+        text: 'What level of support is provided to learners before, during, and after the learning experience?',
+        options: [
+          { label: 'None', text: 'Learners receive the content with no additional support.', score: 1 },
+          { label: 'Minimal', text: 'There\'s a pre-communication and maybe a FAQ document.', score: 2 },
+          { label: 'Some support', text: 'Learners have access to a few resources and some communication touchpoints.', score: 3 },
+          { label: 'Full support journey', text: 'Learners are supported before, during, and after with intentional touchpoints.', score: 4 },
+        ]
+      },
+      {
+        text: 'Are client stakeholders and managers actively engaged in supporting the learning rollout?',
+        options: [
+          { label: 'Not involved', text: 'Managers and stakeholders are not part of the delivery or support plan.', score: 1 },
+          { label: 'Informed only', text: 'They receive updates but are not actively involved.', score: 2 },
+          { label: 'Moderately involved', text: 'Some stakeholders are engaged but it\'s not systematic.', score: 3 },
+          { label: 'Actively partnered', text: 'Stakeholders are equipped and actively involved in driving adoption.', score: 4 },
+        ]
+      },
+      {
+        text: 'Are the technology and tools required for delivery set up, tested, and supported for both facilitators and learners?',
+        options: [
+          { label: 'Not set up', text: 'Tech requirements haven\'t been assessed or prepared for delivery.', score: 1 },
+          { label: 'Partially ready', text: 'The main platform is in place but access, testing, or support hasn\'t been fully addressed.', score: 2 },
+          { label: 'Mostly ready', text: 'Tech is set up and most people can access it, though some gaps remain.', score: 3 },
+          { label: 'Fully enabled', text: 'All tools are configured, tested, and supported — facilitators and learners know how to use them.', score: 4 },
+        ]
+      },
+      {
+        text: 'Where the solution leads to a formal qualification or certification, are the processes for assessment, evidence collection, and compliance being actively managed in delivery?',
+        options: [
+          { label: 'Not managed', text: 'Qualification or certification processes haven\'t been factored into how delivery is being run.', score: 1 },
+          { label: 'Loosely managed', text: 'There\'s awareness but no clear ownership or process for managing compliance requirements.', score: 2 },
+          { label: 'Mostly managed', text: 'Key processes are in place but some compliance or evidence requirements are still unclear.', score: 3 },
+          { label: 'Fully managed', text: 'Assessment, evidence, and compliance processes are clearly owned, documented, and running smoothly.', score: 4 },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'impact',
+    name: 'Impact',
+    tagline: 'Measuring effectiveness & informing next steps',
+    desc: 'These questions assess the robustness of your measurement approach — whether you\'re capturing what actually changed and using data to improve.',
+    badge: 'badge-impact',
+    questions: [
+      {
+        text: 'What type of data do you currently collect to measure the effectiveness of your learning initiatives?',
+        options: [
+          { label: 'Completion only', text: 'We track completions and attendance — that\'s about it.', score: 1 },
+          { label: 'Reaction data', text: 'We use post-event surveys but don\'t go beyond satisfaction scores.', score: 2 },
+          { label: 'Knowledge + reaction', text: 'We assess knowledge acquisition and gather some experience data.', score: 3 },
+          { label: 'Multi-level', text: 'We measure reaction, learning, behaviour change, and business outcomes.', score: 4 },
+        ]
+      },
+      {
+        text: 'How well does your current measurement approach capture behaviour change on the job (not just in the learning environment)?',
+        options: [
+          { label: 'Not at all', text: 'We don\'t attempt to measure what happens after the learning event.', score: 1 },
+          { label: 'Anecdotally', text: 'We hear feedback informally but don\'t collect it systematically.', score: 2 },
+          { label: 'Some evidence', text: 'We gather some post-learning data but it\'s not comprehensive or consistent.', score: 3 },
+          { label: 'Systematically', text: 'We have structured processes to capture on-the-job behaviour change.', score: 4 },
+        ]
+      },
+      {
+        text: 'How actively is data used to make real-time decisions during delivery — not just to evaluate what happened afterwards?',
+        options: [
+          { label: 'Not at all', text: 'We only look at data once everything is finished, if at all.', score: 1 },
+          { label: 'Occasionally', text: 'We check in on data sometimes during a program but it rarely changes anything.', score: 2 },
+          { label: 'Regularly', text: 'We monitor data during delivery and use it to make some adjustments.', score: 3 },
+          { label: 'Continuously', text: 'Data is an active management tool — insights during delivery directly shape decisions in real time.', score: 4 },
+        ]
+      },
+      {
+        text: 'Can you demonstrate a clear link between your learning initiatives and measurable business or organisational outcomes?',
+        options: [
+          { label: 'No', text: 'We haven\'t connected learning to business outcomes.', score: 1 },
+          { label: 'Loosely', text: 'We can make a narrative case but don\'t have data to support it.', score: 2 },
+          { label: 'Partially', text: 'We have some evidence of impact but it\'s not robust or comprehensive.', score: 3 },
+          { label: 'Yes', text: 'We have clear data showing the link between learning and business results.', score: 4 },
+        ]
+      },
+      {
+        text: 'To what extent do data and evidence actively inform decisions about your learning design, content, and strategy — not just evaluate after the fact?',
+        options: [
+          { label: 'Not at all', text: 'We don\'t use data to inform decisions — we rely on experience and opinion.', score: 1 },
+          { label: 'Retrospectively', text: 'We look at data after delivery occasionally, but it rarely changes what we do next.', score: 2 },
+          { label: 'Partially data-informed', text: 'Data influences some decisions but it\'s not embedded as a consistent practice.', score: 3 },
+          { label: 'Consistently data-informed', text: 'Data is a regular input into design, delivery, and strategy decisions across the initiative lifecycle.', score: 4 },
+        ]
+      },
+      {
+        text: 'How effectively does your organisation communicate learning impact to senior stakeholders and decision-makers — beyond reporting on activity and completion?',
+        options: [
+          { label: 'Activity reporting only', text: 'We share completion numbers and attendance figures — there\'s no narrative around outcomes or value.', score: 1 },
+          { label: 'Some outcomes shared', text: 'We occasionally report on learning outcomes but it\'s not framed in terms of business value.', score: 2 },
+          { label: 'Outcomes with context', text: 'We present outcomes with some business context but the link to organisational impact could be stronger.', score: 3 },
+          { label: 'Evidence-based narrative', text: 'We present compelling, evidence-based stories of impact that directly inform investment decisions and build confidence in learning.', score: 4 },
+        ]
+      },
+    ]
+  },
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let answers = {}; // { 'insight-0': 1, 'intent-2': 3, ... }
+let currentModule = 0;
+
+// ─── BUILD QUESTION SCREENS ─────────────────────────────────────────────────
+function buildScreens() {
+  const container = document.getElementById('questionScreens');
+  modules.forEach((mod, mi) => {
+    const screen = document.createElement('div');
+    screen.className = 'screen';
+    screen.id = `screen-module-${mi}`;
+
+    let html = `
+      <div class="section-badge ${mod.badge}">
+        <span class="dot"></span> Module ${mi+1} of 5
+      </div>
+      <h2 class="section-title">${mod.name}</h2>
+      <p class="section-desc">${mod.desc}</p>
+    `;
+
+    mod.questions.forEach((q, qi) => {
+      const key = `${mod.id}-${qi}`;
+      html += `<div class="question-card" id="qcard-${key}">
+        <div class="q-label">Question ${qi+1} of ${mod.questions.length}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="options" id="opts-${key}">`;
+      q.options.forEach((opt, oi) => {
+        html += `<button type="button" class="option-btn" onclick="selectOption('${key}', ${opt.score}, this)"
+          aria-pressed="false"
+          aria-label="${opt.label}: ${opt.text}">
+          <span class="option-indicator" aria-hidden="true">✓</span>
+          <span class="option-text">
+            <span class="option-label">${opt.label}</span><br>
+            ${opt.text}
+          </span>
+        </button>`;
+      });
+      html += `</div></div>`;
+    });
+
+    const isLast = mi === modules.length - 1;
+    html += `
+      <div class="val-msg" id="val-${mi}" role="alert">Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button type="button" class="btn btn-ghost" onclick="goBack(${mi})">${mi === 0 ? '← Back to intro' : '← Previous'}</button>
+        <button type="button" class="btn btn-primary" onclick="${isLast ? `showResults()` : `nextModule(${mi})`}">
+          ${isLast ? 'See My Results →' : 'Next module →'}
+        </button>
+      </div>`;
+    screen.innerHTML = html;
+    container.appendChild(screen);
+  });
+}
+
+// ─── INTERACTION ─────────────────────────────────────────────────────────────
+function selectOption(key, score, btn) {
+  const opts = document.getElementById('opts-' + key);
+  opts.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  btn.classList.add('selected');
+  btn.setAttribute('aria-pressed', 'true');
+  answers[key] = score;
+}
+
+function startDiagnostic() {
+  showScreen('screen-module-0');
+  currentModule = 0;
+  updateProgress();
+  document.getElementById('progressWrap').style.display = 'flex';
+}
+
+function nextModule(mi) {
+  const mod = modules[mi];
+  const unanswered = mod.questions.some((q, qi) => answers[`${mod.id}-${qi}`] === undefined);
+  const valMsg = document.getElementById(`val-${mi}`);
+  if (unanswered) { valMsg.classList.add('show'); return; }
+  valMsg.classList.remove('show');
+  currentModule = mi + 1;
+  showScreen(`screen-module-${mi+1}`);
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack(mi) {
+  if (mi === 0) { showScreen('screen-intro'); document.getElementById('progressWrap').style.display = 'none'; }
+  else { currentModule = mi - 1; showScreen(`screen-module-${mi-1}`); updateProgress(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateProgress() {
+  const total = modules.length;
+  const pct = ((currentModule) / total) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${currentModule} of ${total} modules`;
+}
+
+// ─── SCORING ──────────────────────────────────────────────────────────────────
+function calcScores() {
+  return modules.map(mod => {
+    const total = mod.questions.reduce((sum, q, qi) => {
+      return sum + (answers[`${mod.id}-${qi}`] || 0);
+    }, 0);
+    const max = mod.questions.length * 4;
+    const pct = Math.round((total / max) * 100);
+    return { id: mod.id, name: mod.name, pct, total, max };
+  });
+}
+
+function maturity(pct) {
+  if (pct >= 75) return { label: 'Strong', cls: 'tag-strong' };
+  if (pct >= 45) return { label: 'Developing', cls: 'tag-moderate' };
+  return { label: 'Gap identified', cls: 'tag-gap' };
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────────────
+const moduleColors = { insight: '#ff2323', intent: '#cc1a1a', craft: '#ff5555', enable: '#333333', impact: '#000000' };
+const moduleIcons = { insight: '🔍', intent: '🎯', craft: '✏️', enable: '🚀', impact: '📊' };
+const moduleDescriptions = {
+  insight: { short: 'Discovery & needs analysis', actions: ['Discovery Report', 'Training Needs Analysis', 'Capability Framework', 'Tech Environment Audit', 'Data Audit'] },
+  intent:  { short: 'Learning strategy & blueprint', actions: ['Blueprint Workshop', 'Accreditation Decision', 'Modality & Delivery Design', 'Formal/Social/OTJ Mix', 'Outcome Architecture'] },
+  craft:   { short: 'Design & development', actions: ['Prototype Development', 'Learner Testing', 'Accreditation-Aligned Design', 'Inclusive Design Review'] },
+  enable:  { short: 'Delivery & facilitation support', actions: ['Facilitator Preparation', 'Tech Readiness Check', 'Accreditation Compliance Process', 'Pilot Program', 'Learner Support Kit'] },
+  impact:  { short: 'Measurement & continuous improvement', actions: ['Impact Framework', 'Real-Time Data Practice', 'Behaviour Change Measurement', 'Insights Review'] },
+};
+
+function showResults() {
+  const mod = modules[4];
+  const unanswered = mod.questions.some((q, qi) => answers[`${mod.id}-${qi}`] === undefined);
+  const valMsg = document.getElementById('val-4');
+  if (unanswered) { valMsg.classList.add('show'); return; }
+  valMsg.classList.remove('show');
+
+  const scores = calcScores();
+  const overall = Math.round(scores.reduce((s, m) => s + m.pct, 0) / scores.length);
+  const gaps = scores.filter(s => s.pct < 45).sort((a,b) => a.pct - b.pct);
+  const developing = scores.filter(s => s.pct >= 45 && s.pct < 75).sort((a,b) => a.pct - b.pct);
+  const strong = scores.filter(s => s.pct >= 75);
+
+  // Build summary line
+  let overallText = '';
+  if (overall >= 75) overallText = 'Your organisation shows strong foundations across the board — there are targeted areas to push even further.';
+  else if (overall >= 50) overallText = 'There is a developing approach in place with real opportunity to strengthen key areas and drive greater impact.';
+  else overallText = 'There are significant opportunities to strengthen how your organisation uses learning to solve problems and drive results.';
+
+  // Score cards HTML
+  let scoreCardsHTML = `<div class="score-grid">`;
+  scores.forEach(s => {
+    const m = maturity(s.pct);
+    scoreCardsHTML += `<div class="score-card ${s.id}">
+      <div class="score-module-name ${s.id}">${moduleIcons[s.id]} ${s.name}</div>
+      <div class="score-value">${s.pct}%</div>
+      <div class="score-label">${s.total} of ${s.max} points</div>
+      <div class="score-bar-track"><div class="score-bar-fill fill-${s.id}" id="fill-${s.id}"></div></div>
+      <div><span class="maturity-tag ${m.cls}">${m.label}</span></div>
+    </div>`;
+  });
+  scoreCardsHTML += `</div>`;
+
+  // Gap analysis
+  let gapHTML = '';
+  if (gaps.length > 0) {
+    gapHTML += `<h3 class="section-heading">Gap Analysis</h3>
+    <p class="section-subheading">These areas present the most significant opportunities for improvement.</p>`;
+    gaps.forEach(g => {
+      gapHTML += `<div class="gap-item">
+        <div class="gap-icon" style="background:${moduleColors[g.id]}20; color:${moduleColors[g.id]}; font-size:1.2rem;">${moduleIcons[g.id]}</div>
+        <div class="gap-content">
+          <div class="gap-title">${g.name} — ${g.pct}% readiness</div>
+          <div class="gap-desc">Your responses indicate significant gaps at the <strong>${g.name}</strong> stage. ${getGapInsight(g.id, g.pct)}</div>
+        </div>
+      </div>`;
+    });
+  }
+  if (developing.length > 0) {
+    gapHTML += `<div style="margin-top:1.5rem"><h3 class="section-heading">Developing Areas</h3>
+    <p class="section-subheading">Good foundations exist — targeted investment will accelerate these areas.</p>`;
+    developing.forEach(g => {
+      gapHTML += `<div class="gap-item">
+        <div class="gap-icon" style="background:${moduleColors[g.id]}20; color:${moduleColors[g.id]}; font-size:1.2rem;">${moduleIcons[g.id]}</div>
+        <div class="gap-content">
+          <div class="gap-title">${g.name} — ${g.pct}% readiness</div>
+          <div class="gap-desc">${getDevelopingInsight(g.id)}</div>
+        </div>
+      </div>`;
+    });
+    gapHTML += `</div>`;
+  }
+  if (gaps.length === 0 && developing.length === 0) {
+    gapHTML += `<div class="gap-item"><div class="gap-icon" style="background:#e8f5e9;color:#2e7d32;font-size:1.4rem">✓</div>
+      <div class="gap-content"><div class="gap-title">Strong across all areas</div>
+      <div class="gap-desc">Your learning practice shows strong readiness across all five stages. The focus should be on continuous improvement and pushing toward exceptional impact measurement.</div></div></div>`;
+  }
+
+  // Recommendations
+  const priorityMods = [...gaps, ...developing].slice(0, 3);
+  let recHTML = `<div class="divider"></div><h3 class="section-heading">Recommended Modules</h3>
+    <p class="section-subheading">Based on your diagnostic results, here's where we recommend engaging.</p>`;
+  
+  priorityMods.forEach((s, i) => {
+    const d = moduleDescriptions[s.id];
+    const isPriority = i === 0;
+    recHTML += `<div class="rec-card ${isPriority ? 'priority' : 'secondary'}">
+      <div class="rec-header">
+        <span class="rec-module" style="background:${moduleColors[s.id]}20;color:${moduleColors[s.id]}">${moduleIcons[s.id]} ${s.name}</span>
+        ${isPriority ? '<span class="rec-priority-badge">★ Highest Priority</span>' : ''}
+      </div>
+      <div class="rec-title">${d.short}</div>
+      <div class="rec-desc">${getRecDesc(s.id, s.pct)}</div>
+      <div class="rec-actions">
+        ${d.actions.map(a => `<span class="action-pill">${a}</span>`).join('')}
+      </div>
+    </div>`;
+  });
+
+  if (strong.length > 0) {
+    recHTML += `<div class="rec-card secondary" style="margin-top:0.5rem">
+      <div class="rec-header"><span style="font-size:0.78rem;color:var(--muted);font-weight:600">✓ Strong foundations in: ${strong.map(s => s.name).join(', ')}</span></div>
+      <div class="rec-desc">These areas are performing well. We recommend maintaining momentum with periodic reviews and using these as reference points when strengthening weaker areas.</div>
+    </div>`;
+  }
+
+  // Next steps
+  const topModule = priorityMods[0] || scores[0];
+  const nextStepsHTML = `<div class="next-steps">
+    <h3 class="next-steps-title">Your Next Steps</h3>
+    <p class="next-steps-sub">Here's how to move forward with your From Insight to Impact™ journey.</p>
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Share this diagnostic with key stakeholders</div>
+        <div class="step-desc">Use these results as a conversation starter with your L&D leadership and project sponsors to align on where investment is most needed.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Prioritise the ${topModule.name} module</div>
+        <div class="step-desc">Your results suggest this is the highest-leverage starting point. Engaging here will unlock greater impact across connected stages.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Book a discovery conversation</div>
+        <div class="step-desc">Bring these results to a conversation with our team. We'll explore your context in depth and co-design the right engagement for your organisation.</div>
+      </div>
+    </div>
+    <div class="results-cta-row">
+      <button type="button" class="btn btn-gold" onclick="window.print()">Download / Print Results</button>
+      <button type="button" class="btn btn-ghost" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)" onclick="restartDiagnostic()">← Retake Diagnostic</button>
+    </div>
+  </div>`;
+
+  // Assemble results screen
+  const resultsScreen = document.getElementById('screen-results');
+  resultsScreen.innerHTML = `
+    <div class="results-header">
+      <div class="results-eyebrow">Your Diagnostic Results</div>
+      <h2 class="results-title">Overall Readiness: ${overall}%</h2>
+      <p class="results-sub">${overallText}</p>
+    </div>
+    ${scoreCardsHTML}
+    <div class="divider"></div>
+    ${gapHTML}
+    ${recHTML}
+    ${nextStepsHTML}
+  `;
+
+  showScreen('screen-results');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Complete';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Animate bars
+  setTimeout(() => {
+    scores.forEach(s => {
+      const el = document.getElementById(`fill-${s.id}`);
+      if (el) el.style.width = s.pct + '%';
+    });
+  }, 200);
+}
+
+function getGapInsight(id, pct) {
+  const insights = {
+    insight: 'Without a solid discovery foundation — including understanding the tech environment and learner constraints — learning solutions risk addressing the wrong problem and landing in the wrong format.',
+    intent: 'Without a clear blueprint that deliberately addresses modality, the formal/social/on-the-job mix, and outcome architecture, initiatives become fragmented and disconnected from what actually drives performance.',
+    craft: 'Without learner-centred design, real-world application, and clarity on accreditation requirements, even well-intended learning fails to transfer to performance.',
+    enable: 'Delivery gaps — including tech readiness and stakeholder activation — mean that even well-designed learning can fail to land, undermining your investment.',
+    impact: 'Without robust, data-informed measurement that goes beyond completion rates, you\'re unable to prove value, identify what\'s working, or make confident decisions about future learning.'
+  };
+  return insights[id] || '';
+}
+
+function getDevelopingInsight(id) {
+  const insights = {
+    insight: 'You have some discovery practice in place. Formalising this — including a clear picture of the tech environment and learner context — will sharpen your ability to diagnose real causes and build stakeholder confidence.',
+    intent: 'Your planning approach has solid elements. A more structured blueprint that explicitly addresses delivery modality, the formal/social/on-the-job learning mix, and barrier mitigation will sharpen alignment and outcomes.',
+    craft: 'Your design quality is developing. Embedding more systematic learner testing, adult learning principles, and a deliberate accreditation decision will noticeably lift transfer and engagement.',
+    enable: 'Your delivery support is decent. Strengthening your tech readiness process, pilot cycle, and learner enablement will improve adoption and reduce rollout risk.',
+    impact: 'You\'re gathering some data. Building a more structured, data-informed measurement approach — one that actively shapes decisions, not just reports after the fact — will help you demonstrate and scale impact.'
+  };
+  return insights[id] || '';
+}
+
+function getRecDesc(id, pct) {
+  const base = {
+    insight: 'We recommend starting with the Insight module to establish a shared, evidence-based understanding of the business context, learner needs, and tech environment — using existing data to validate the problem before investing further.',
+    intent: 'The Intent module will help you translate what you know into a clear strategic blueprint — one that makes deliberate decisions on accreditation, delivery modality, and the right blend of formal, social, and on-the-job learning.',
+    craft: 'Engaging the Craft module will bring rigour and learner-centricity to your design and development — ensuring accreditation requirements are fully reflected in assessment and structure, and that what you create actually shifts performance.',
+    enable: 'The Enable module will ensure your delivery ecosystem is fully set up for success — from tech readiness and facilitator preparation through to managing any accreditation compliance and evidence requirements in delivery.',
+    impact: 'The Impact module will help you build a credible, data-informed measurement framework — one that drives real-time decisions during delivery, not just post-program reporting, and connects learning to measurable business outcomes.'
+  };
+  return base[id] || '';
+}
+
+function restartDiagnostic() {
+  answers = {};
+  currentModule = 0;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  showScreen('screen-intro');
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('progressFill').style.width = '0%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+buildScreens();
+</script>
+</body>
+</html>
