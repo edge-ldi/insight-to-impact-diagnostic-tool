@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>From Insight to Impact™ — Diagnostic</title>
+<title>From Insight to Impact™ — Learning Effectiveness Health Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -532,6 +532,80 @@
     line-height: 1.62;
   }
 
+  /* ─── ROI TOGGLE ─── */
+  .roi-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.6rem;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--grey);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    letter-spacing: 0.02em;
+  }
+  .roi-toggle-btn:hover {
+    border-color: var(--red);
+    color: #c00000;
+    background: var(--red-pale);
+  }
+  .roi-toggle-btn.active {
+    border-color: var(--red);
+    background: var(--red-pale);
+    color: #c00000;
+  }
+  .roi-toggle-btn .toggle-icon {
+    font-size: 0.8rem;
+    transition: transform 0.25s ease;
+  }
+  .roi-toggle-btn.active .toggle-icon {
+    transform: rotate(180deg);
+  }
+  .roi-panel {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #fff8f8, var(--red-pale));
+    border: 1px solid #ffd0d0;
+    animation: fadeUp 0.3s ease both;
+  }
+  .roi-panel.open { display: block; }
+  .roi-panel-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #c00000;
+    margin-bottom: 0.7rem;
+  }
+  .roi-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .roi-row:last-child { margin-bottom: 0; }
+  .roi-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .roi-text {
+    font-size: 0.83rem;
+    line-height: 1.58;
+    color: var(--off-black);
+  }
+  .roi-text strong {
+    color: var(--black);
+    font-weight: 600;
+  }
+
   /* ─── RECOMMENDATIONS ─── */
   .rec-card {
     border-radius: 14px;
@@ -737,7 +811,7 @@
 <header class="header">
   <div>
     <div class="logo">From Insight to Impact<span>™</span></div>
-    <div class="tagline">Learning Effectiveness Diagnostic</div>
+    <div class="tagline">Learning Effectiveness Health Check</div>
   </div>
   <div class="progress-wrap" id="progressWrap" style="display:none">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -745,13 +819,13 @@
   </div>
 </header>
 
-<main class="main" id="main-content" aria-label="Diagnostic assessment">
+<main class="main" id="main-content" aria-label="Learning effectiveness health check">
 
   <!-- ══ SCREEN 0: INTRO ══ -->
   <div class="screen active" id="screen-intro">
-    <p class="intro-eyebrow">Diagnostic Assessment</p>
+    <p class="intro-eyebrow">Learning Effectiveness Health Check</p>
     <h1 class="intro-title">Where does your<br>learning initiative<br><em>really</em> stand?</h1>
-    <p class="intro-body">This diagnostic helps identify how effectively your organisation is using learning to solve real problems and drive results — and which modules of the From Insight to Impact™ framework will deliver the most value for your organisation right now.</p>
+    <p class="intro-body">This tool helps identify how effectively your organisation is using learning to solve real problems and support impact — and which modules of the From Insight to Impact™ framework will deliver the most value for your organisation right now.</p>
     <div class="module-chips">
       <span class="chip insight">① Insight</span>
       <span class="chip intent">② Intent</span>
@@ -759,15 +833,19 @@
       <span class="chip enable">④ Enable</span>
       <span class="chip impact">⑤ Impact</span>
     </div>
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:2rem;display:flex;gap:0.75rem;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;margin-top:1px;">💡</span>
+      <p style="font-size:0.84rem;color:var(--grey);line-height:1.65;margin:0;"><strong style="color:var(--black);font-weight:600;">Whether you're starting from scratch or improving an existing approach</strong> — this health check is designed to work for you. Answer based on your current situation, and where something doesn't apply yet, select the response that best reflects your typical starting point.</p>
+    </div>
     <p style="font-size:0.85rem;color:var(--light-grey);margin-bottom:2rem;">Takes approximately 8–12 minutes &nbsp;·&nbsp; 30 questions across 5 modules</p>
-    <button type="button" class="btn btn-gold" onclick="startDiagnostic()">Begin Diagnostic &rarr;</button>
+    <button type="button" class="btn btn-gold" onclick="startDiagnostic()">Begin health check &rarr;</button>
   </div>
 
   <!-- ══ SCREENS 1–5: QUESTION SECTIONS ══ -->
   <div id="questionScreens"></div>
 
   <!-- ══ SCREEN: RESULTS ══ -->
-  <div class="screen" id="screen-results" aria-live="polite" aria-atomic="true" role="region" aria-label="Your diagnostic results"></div>
+  <div class="screen" id="screen-results" aria-live="polite" aria-atomic="true" role="region" aria-label="Your health check results"></div>
 
 </main>
 
@@ -845,7 +923,7 @@ const modules = [
     badge: 'badge-intent',
     questions: [
       {
-        text: 'Do you have a documented learning strategy or blueprint that outlines the approach, outcomes, and rationale?',
+        text: 'Do you have a documented learning strategy or blueprint (learning architecture document) that outlines the approach, outcomes, and rationale?',
         options: [
           { label: 'No', text: 'We\'re building directly without a strategy document.', score: 1 },
           { label: 'In progress', text: 'We\'re working on it but it\'s incomplete or hasn\'t been shared.', score: 2 },
@@ -881,7 +959,7 @@ const modules = [
         ]
       },
       {
-        text: 'Does your current approach include a deliberate mix of modalities and touchpoints (not just a single course or event)?',
+        text: 'Does your current approach include a considered mix of interventions and touchpoints (not just a single course or event)?',
         options: [
           { label: 'Single intervention', text: 'We\'re delivering one course or event and that\'s it.', score: 1 },
           { label: 'Minimal variety', text: 'There\'s a primary modality with perhaps one supporting resource.', score: 2 },
@@ -1259,7 +1337,7 @@ function showResults() {
   // Gap analysis
   let gapHTML = '';
   if (gaps.length > 0) {
-    gapHTML += `<h3 class="section-heading">Gap Analysis</h3>
+    gapHTML += `<h3 class="section-heading">Gap analysis</h3>
     <p class="section-subheading">These areas present the most significant opportunities for improvement.</p>`;
     gaps.forEach(g => {
       gapHTML += `<div class="gap-item">
@@ -1267,12 +1345,20 @@ function showResults() {
         <div class="gap-content">
           <div class="gap-title">${g.name} — ${g.pct}% readiness</div>
           <div class="gap-desc">Your responses indicate significant gaps at the <strong>${g.name}</strong> stage. ${getGapInsight(g.id, g.pct)}</div>
+          <button type="button" class="roi-toggle-btn" onclick="toggleROI(this)">
+            <span>See the potential impact</span><span class="toggle-icon">▾</span>
+          </button>
+          <div class="roi-panel">
+            <div class="roi-panel-label">Potential impact of addressing this</div>
+            <div class="roi-row"><div class="roi-icon">✦</div><div class="roi-text"><strong>What you unlock:</strong> ${roiData[g.id].unlock}</div></div>
+            <div class="roi-row"><div class="roi-icon">◈</div><div class="roi-text"><strong>What you avoid:</strong> ${roiData[g.id].avoid}</div></div>
+          </div>
         </div>
       </div>`;
     });
   }
   if (developing.length > 0) {
-    gapHTML += `<div style="margin-top:1.5rem"><h3 class="section-heading">Developing Areas</h3>
+    gapHTML += `<div style="margin-top:1.5rem"><h3 class="section-heading">Developing areas</h3>
     <p class="section-subheading">Good foundations exist — targeted investment will accelerate these areas.</p>`;
     developing.forEach(g => {
       gapHTML += `<div class="gap-item">
@@ -1280,6 +1366,14 @@ function showResults() {
         <div class="gap-content">
           <div class="gap-title">${g.name} — ${g.pct}% readiness</div>
           <div class="gap-desc">${getDevelopingInsight(g.id)}</div>
+          <button type="button" class="roi-toggle-btn" onclick="toggleROI(this)">
+            <span>See the potential impact</span><span class="toggle-icon">▾</span>
+          </button>
+          <div class="roi-panel">
+            <div class="roi-panel-label">Potential impact of addressing this</div>
+            <div class="roi-row"><div class="roi-icon">✦</div><div class="roi-text"><strong>What you unlock:</strong> ${roiData[g.id].unlock}</div></div>
+            <div class="roi-row"><div class="roi-icon">◈</div><div class="roi-text"><strong>What you avoid:</strong> ${roiData[g.id].avoid}</div></div>
+          </div>
         </div>
       </div>`;
     });
@@ -1293,8 +1387,8 @@ function showResults() {
 
   // Recommendations
   const priorityMods = [...gaps, ...developing].slice(0, 3);
-  let recHTML = `<div class="divider"></div><h3 class="section-heading">Recommended Modules</h3>
-    <p class="section-subheading">Based on your diagnostic results, here's where we recommend engaging.</p>`;
+  let recHTML = `<div class="divider"></div><h3 class="section-heading">Recommended modules</h3>
+    <p class="section-subheading">Based on your health check results, here's where we recommend engaging.</p>`;
   
   priorityMods.forEach((s, i) => {
     const d = moduleDescriptions[s.id];
@@ -1302,7 +1396,7 @@ function showResults() {
     recHTML += `<div class="rec-card ${isPriority ? 'priority' : 'secondary'}">
       <div class="rec-header">
         <span class="rec-module" style="background:${moduleColors[s.id]}20;color:${moduleColors[s.id]}">${moduleIcons[s.id]} ${s.name}</span>
-        ${isPriority ? '<span class="rec-priority-badge">★ Highest Priority</span>' : ''}
+        ${isPriority ? '<span class="rec-priority-badge">★ Highest priority</span>' : ''}
       </div>
       <div class="rec-title">${d.short}</div>
       <div class="rec-desc">${getRecDesc(s.id, s.pct)}</div>
@@ -1322,12 +1416,12 @@ function showResults() {
   // Next steps
   const topModule = priorityMods[0] || scores[0];
   const nextStepsHTML = `<div class="next-steps">
-    <h3 class="next-steps-title">Your Next Steps</h3>
+    <h3 class="next-steps-title">Your next steps</h3>
     <p class="next-steps-sub">Here's how to move forward with your From Insight to Impact™ journey.</p>
     <div class="step-row">
       <div class="step-num">1</div>
       <div class="step-body">
-        <div class="step-title">Share this diagnostic with key stakeholders</div>
+        <div class="step-title">Review the outcomes and share with your key stakeholders</div>
         <div class="step-desc">Use these results as a conversation starter with your L&D leadership and project sponsors to align on where investment is most needed.</div>
       </div>
     </div>
@@ -1341,13 +1435,13 @@ function showResults() {
     <div class="step-row">
       <div class="step-num">3</div>
       <div class="step-body">
-        <div class="step-title">Book a discovery conversation</div>
-        <div class="step-desc">Bring these results to a conversation with our team. We'll explore your context in depth and co-design the right engagement for your organisation.</div>
+        <div class="step-title">Contact your Senior Consultant</div>
+        <div class="step-desc">Please contact your Senior Consultant to discuss your results and learn how we have addressed similar gaps across other organisations.</div>
       </div>
     </div>
     <div class="results-cta-row">
-      <button type="button" class="btn btn-gold" onclick="window.print()">Download / Print Results</button>
-      <button type="button" class="btn btn-ghost" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)" onclick="restartDiagnostic()">← Retake Diagnostic</button>
+      <button type="button" class="btn btn-gold" onclick="window.print()">Download / print results</button>
+      <button type="button" class="btn btn-ghost" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)" onclick="restartDiagnostic()">← Retake health check</button>
     </div>
   </div>`;
 
@@ -1355,8 +1449,8 @@ function showResults() {
   const resultsScreen = document.getElementById('screen-results');
   resultsScreen.innerHTML = `
     <div class="results-header">
-      <div class="results-eyebrow">Your Diagnostic Results</div>
-      <h2 class="results-title">Overall Readiness: ${overall}%</h2>
+      <div class="results-eyebrow">Your health check results</div>
+      <h2 class="results-title">Overall maturity: ${overall}%</h2>
       <p class="results-sub">${overallText}</p>
     </div>
     ${scoreCardsHTML}
@@ -1379,6 +1473,35 @@ function showResults() {
     });
   }, 200);
 }
+
+function toggleROI(btn) {
+  btn.classList.toggle('active');
+  const panel = btn.nextElementSibling;
+  panel.classList.toggle('open');
+}
+
+const roiData = {
+  insight: {
+    unlock: 'When discovery is done well, learning investments are targeted at the right problems from the start — reducing the risk of costly redesigns and late-stage pivots. Organisations gain clearer evidence to justify L&D spend and build stakeholder confidence early.',
+    avoid: 'Without strong discovery, learning solutions routinely address the wrong problem or land in the wrong format — wasting budget, time, and goodwill. The cost of this is rarely visible until stakeholder trust has already eroded.'
+  },
+  intent: {
+    unlock: 'A clear strategic blueprint means every design decision has a rationale — reducing scope creep, misaligned expectations, and rework. It creates shared ownership between L&D and the business, making it far easier to measure what matters.',
+    avoid: 'Without a deliberate blueprint, initiatives become fragmented. Teams spend more time managing misalignment than delivering value, and the connection between learning and business outcomes becomes impossible to demonstrate.'
+  },
+  craft: {
+    unlock: 'Learner-centred design that reflects real working conditions dramatically improves transfer from learning to performance. This means less time re-training, fewer errors in practice, and a stronger return on every hour of learner time invested.',
+    avoid: 'Learning that doesn\'t reflect how people actually work rarely shifts behaviour. The hidden cost is not just wasted design effort — it\'s the ongoing performance gap that the learning was meant to close.'
+  },
+  enable: {
+    unlock: 'When the delivery ecosystem is fully prepared — tech tested, facilitators activated, learners set up for success — adoption rates rise and rollout friction drops significantly. This protects the investment already made in design and development.',
+    avoid: 'Even excellent learning design fails when the delivery environment isn\'t ready. Poor adoption, technical issues, and disengaged facilitators erode both the learning outcomes and confidence in the L&D function.'
+  },
+  impact: {
+    unlock: 'Robust measurement gives L&D the evidence it needs to demonstrate value, make informed decisions, and secure future investment. It shifts the function from order-taker to strategic partner — and makes it possible to scale what works.',
+    avoid: 'Without meaningful measurement, L&D is perpetually on the back foot — unable to prove impact, justify budget, or identify what to improve. Completion rates and smile sheets are not enough to build credibility or drive decisions.'
+  }
+};
 
 function getGapInsight(id, pct) {
   const insights = {
