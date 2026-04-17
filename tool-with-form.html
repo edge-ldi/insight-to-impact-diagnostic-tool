@@ -1320,7 +1320,7 @@ function storeResults() {
   try {
     const redirectTarget = 'https://go.demo.pardot.com/l/1033431/2026-04-15/5h3r';
     const sep = redirectTarget.includes('?') ? '&' : '?';
-    const url = redirectTarget + sep + 'ref=' + encodeURIComponent(storageRef);
+    const url = redirectTarget + sep + 'Ref=' + encodeURIComponent(storageRef);
     // Navigate away to the Pardot landing page with the ref
     window.location.href = url;
   } catch (err) {
