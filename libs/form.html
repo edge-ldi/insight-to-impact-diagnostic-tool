@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Insight to Impact™ — Contact form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet">
+    <style>
+      :root {
+        --red: #ED1C2E;
+        --red-dark: #c0162a;
+        --red-deep: #7a0018;
+        --red-mid: #ED1C2E;
+        --red-pale: #fff0f2;
+        --red-light: #ffd0d4;
+        --black: #000000;
+        --off-black: #111111;
+        --dark-grey: #1c1c1c;
+        --mid-grey: #2e2e2e;
+        --grey: #555555;
+        --light-grey: #595959;   /* was #999999 — darkened for WCAG AA on white */
+        --border: #E7E7E8;
+        --off-white: #f8f8f8;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0
+      }
+
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--off-white);
+        color: var(--black);
+        min-height: 100vh
+      }
+
+      /* header */
+      .header {
+        padding: 1.6rem 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--black);
+        position: relative
+      }
+
+      .header::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--red) 0%, #f07080 50%, var(--red) 100%)
+      }
+
+      .logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--white)
+      }
+
+      .logo span {
+        color: var(--red)
+      }
+
+      .tagline {
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.62);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-top: 3px
+      }
+
+      /* ─── PROGRESS BAR ─── */
+      .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .progress-bar {
+        width: 180px;
+        height: 2px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--red), #f07080);
+        border-radius: 99px;
+        transition: width 0.5s ease;
+        width: 0%;
+      }
+
+      .progress-label {
+        font-size: 0.68rem;
+        color: rgba(255,255,255,0.62);
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+      }
+
+      /* ─── MAIN CONTENT ─── */
+      .main {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 3.5rem 2rem 5rem
+      }
+
+      /* section badge + title */
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .3rem .85rem;
+        border-radius: 99px;
+        font-size: .68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 1.2rem;
+        background: #fff0f2;
+        color: #c0162a
+      }
+
+      .section-badge .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--red)
+      }
+
+      .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.75rem;
+        margin-bottom: .5rem;
+        color: var(--black)
+      }
+
+      /* contact card + form */
+      .contact-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.6rem;
+        margin-bottom: 1.6rem;
+        box-shadow: 0 1px 10px rgba(0, 0, 0, .04)
+      }
+
+      .contact-form .form-row {
+        display: flex;
+        gap: .75rem;
+        margin-bottom: .85rem
+      }
+
+      .contact-form .form-row--single {
+        display: block
+      }
+
+      .contact-form label {
+        display: block;
+        font-size: .78rem;
+        color: var(--light-grey);
+        margin-bottom: .35rem;
+        font-weight: 600
+      }
+
+      .contact-form input,
+      .contact-form select,
+      .contact-form textarea {
+        width: 100%;
+        padding: .7rem .85rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--off-white);
+        font-size: .95rem;
+        color: var(--off-black)
+      }
+
+      .contact-form input:focus {
+        outline: 3px solid rgba(237, 28, 46, .12);
+        border-color: var(--red)
+      }
+
+      .contact-note {
+        font-size: .85rem;
+        color: var(--grey);
+        margin-bottom: .85rem
+      }
+
+      .disclaimer-note {
+        font-size: 0.75rem;
+        color: var(--dark-grey);
+        margin: 1rem 0;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: .6rem;
+        align-items: center;
+        margin-top: .6rem;
+        justify-content: end
+      }
+
+      .input-required {
+        color: var(--red);
+        margin-left: .35rem;
+        font-weight: 700
+      }
+
+      /* buttons (minimal) */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.9rem;
+        border-radius: 99px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+        letter-spacing: 0.03em;
+      }
+
+      .btn-primary {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background: var(--dark-grey);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+      }
+
+      @media (max-width:600px) {
+        .header {
+          flex-direction: column;
+          align-items: flex-start
+        }
+
+        .main {
+          padding: 2rem 1.2rem 4rem
+        }
+
+        .contact-form .form-row {
+          flex-direction: column
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER Section -->
+    <header class="header">
+      <div>
+        <div class="logo">From Insight to Impact<span>™</span></div>
+        <div class="tagline">Learning Effectiveness Health Check</div>
+      </div>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 100%;"></div>
+        </div>
+        <div class="progress-label">Complete</div>
+      </div>
+    </header>
+    <!-- MAIN Section -->
+    <main class="main" id="main-content" aria-label="Contact form — Learning effectiveness health check">
+      <div class="contact-card contact-form">
+        <div class="section-badge badge-insight"><span class="dot"></span> Contact details</div>
+        <h2 class="section-title">Enter your details to view your results</h2>
+        <!-- <p class="contact-note">
+          Please provide your details so we can share your results and follow up. All fields are required except the phone number.
+        </p> -->
+        <p class="contact-note">
+          We’ll use this information to share your results with you and follow up if needed. All fields are required except the phone number.
+        </p>
+        <form id="contactForm">
+          <div class="form-row">
+            <div style="flex:1">
+              <label for="firstName">First name <span class="input-required">*</span></label>
+              <input id="firstName" name="firstName" type="text" required autocomplete="given-name">
+            </div>
+            <div style="flex:1">
+              <label for="lastName">Last name <span class="input-required">*</span></label>
+              <input id="lastName" name="lastName" type="text" required autocomplete="family-name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div style="flex:1">
+              <label for="organisation">Organisation <span class="input-required">*</span></label>
+              <input id="organisation" name="organisation" type="text" required>
+            </div>
+            <div style="flex:1">
+              <label for="title">Job title <span class="input-required">*</span></label>
+              <input id="title" name="title" type="text" required>
+            </div>
+          </div>
+          <div class="form-row form-row--single">
+            <div>
+              <label for="email">Work email <span class="input-required">*</span></label>
+              <input id="email" name="email" type="email" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-row form-row--single">
+            <div>
+              <label for="phone">
+                Phone number <span style="font-weight:600;color:var(--grey);">(optional)</span>
+              </label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-row">
+            <p class="disclaimer-note">
+              By completing this form, you consent to receiving future information from Swinburne. Swinburne collects personal information when you register with us. We will use this information to provide the services requested and to provide you with information about products or services provided by us that we feel may be of interest to you. Should you wish to no longer receive these communications, you can opt-out at any time by clicking on the unsubscribe link at the bottom of the communication. For more information explaining how we use your information, please visit our <a href="https://www.swinburne.edu.au/privacy/">Privacy Guidelines and Procedures</a>.
+            </p>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Continue to results →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
